@@ -25,7 +25,7 @@ class BingoCard {
   }
   
   private createState() {
-    let board: number[][] = []
+    let state: number[][] = []
     let numberList: number[][] = []
     for(let cols = 0; cols < 5; cols++){
       const inc = 15 * cols
@@ -34,27 +34,49 @@ class BingoCard {
       numberList.push(this.get5RandomNumbersFromRange(from, to))
     }
     
-    for (let i = 0; i < numberList.length; i++) {
-      board.push([])
-      for (let j = 0; j < numberList[i].length; j++) {
-        board[i].push(numberList[j][i])
+    for (let cols = 0; cols < numberList.length; cols++) {
+      state.push([])
+      for (let rows = 0; rows < numberList[cols].length; rows++) {
+        const strVal = numberList[rows][cols]
+        state[cols].push(strVal)
       }
     }
-
-    return board
+    return state
   }
 
   private title() {
 
   }
 
-  private board(){
+  private grid(){
+    const table = document.createElement('table')
+    const state = this.createState()
 
+    for(let cols = 0; cols < state.length; cols++){
+      const tr = document.createElement('tr')
+      for (let rows = 0; rows < state[cols].length; rows++) {
+        const td = document.createElement('td')
+        td.textContent = state[cols][rows].toString()
+        if(cols === 2 && rows === 2){
+          td.textContent = 'Free'
+        }
+        tr.appendChild(td)
+      }
+      table.appendChild(tr)
+    }
+
+
+
+    return table
   }
 
   public render(): HTMLElement{
-    console.log(this.createState())
-    return document.createElement('div')
+
+    const board = document.createElement('div')
+
+    utils.appendMultiple(board)(this.grid())
+
+    return board
   }
   
 }
