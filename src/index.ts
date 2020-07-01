@@ -6,13 +6,9 @@ import BingoCard from './BingoCard'
 const title = document.createElement('h1')
 title.textContent = 'Bingo board'
 
-// TODO: bingo title
-
 // Bingo board
 
-
 const bingoCard = new BingoCard()
-
 const container = document.createElement('div')
 
 utils.appendMultiple(container)(title, bingoCard.render())
