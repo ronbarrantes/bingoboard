@@ -1,5 +1,10 @@
-interface AppendMultiple {
+export interface AppendMultiple {
   (parent: HTMLElement): (...children: HTMLElement[]) => void;
+}
+
+export interface BoardState {
+  value: number
+  isEnabled: boolean
 }
 
 /**
@@ -53,4 +58,50 @@ export const shuffleArray = (array: number[]): number[] => {
     }
   
     return array;
+  }
+
+    /**
+   * get a sequence of number and returns 5 random numbers from said sequence
+   * @param from start of the range 
+   * @param to end of the range
+   * @returns 5 random numbers from the range
+   */
+  export const get5RandomNumbersFromRange = (from: number, to: number): number[] => {
+    let orderedList = []
+    let resultList = []
+
+    if(from + 4 > to){
+      throw new Error('from value needs to be at least 5 numbers bigger');
+    }
+
+    for(let i = from; i <= to; i++){
+      orderedList.push(i)
+    }
+
+    resultList = shuffleArray(orderedList).splice(0, 5)
+    return resultList
+  }
+
+  /**
+   * Makes an initial state object of of an array with a value and isEnabled
+   * 
+   */
+  export const createState = () => {
+    let state: BoardState[][] = []
+    let numberList: number[][] = []
+    for(let cols = 0; cols < 5; cols++){
+      const inc = 15 * cols
+      const from = 1 + inc 
+      const to = from + 14 
+      numberList.push(get5RandomNumbersFromRange(from, to))
+    }
+    
+    for (let cols = 0; cols < numberList.length; cols++) {
+      state.push([])
+      for (let rows = 0; rows < numberList[cols].length; rows++) {
+        const strVal = numberList[rows][cols]
+        state[cols].push({ value: strVal, isEnabled: false })
+      }
+    }
+    return state
   }
